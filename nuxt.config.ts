@@ -29,12 +29,9 @@ export default defineNuxtConfig({
     anthropicApiKey: process.env.ANTHROPIC_API_KEY || '',
     // session 加密密碼（正式環境請改）：NUXT_SESSION_PASSWORD
     sessionPassword: 'buymobile-local-dev-session-secret-32ch!',
-  },
-
-  nitro: {
-    storage: {
-      data: { driver: 'fs', base: './data' },
-    },
+    // Supabase 連線資訊：NUXT_SUPABASE_URL / NUXT_SUPABASE_SERVICE_KEY
+    supabaseUrl: '',
+    supabaseServiceKey: '',
   },
 
   pwa: {

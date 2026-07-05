@@ -29,3 +29,4 @@ logs
 # 本機資料與環境變數
 data
 .env
+.vercel

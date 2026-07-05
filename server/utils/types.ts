@@ -1,4 +1,4 @@
-// 共用型別定義（本機檔案儲存版；之後可無痛換成 Supabase）
+// 共用型別定義（資料存於 Supabase）
 
 export interface User {
   username: string
