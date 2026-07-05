@@ -31,6 +31,7 @@ const titleMap: Record<string, string> = {
   '/admin': '報價管理',
   '/admin/purchase': '採購比對',
   '/admin/settings': '公司資訊',
+  '/admin/change-password': '修改密碼',
 }
 
 const pageTitle = computed(() => titleMap[route.path] ?? '報價管理後台')
@@ -148,6 +149,16 @@ async function logout() {
               前台預覽
             </NuxtLink>
             <div class="flex items-center gap-2 border-l border-slate-200 pl-2 sm:pl-3 ml-1">
+              <NuxtLink
+                to="/admin/change-password"
+                class="p-1.5 rounded-lg text-slate-400 hover:bg-slate-100 hover:text-slate-600 transition"
+                title="修改密碼"
+              >
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M15 7a2 2 0 012 2m4 0a6 6 0 01-7.743 5.743L11 17H9v2H7v2H4a1 1 0 01-1-1v-2.586a1 1 0 01.293-.707l5.964-5.964A6 6 0 1121 9z" />
+                </svg>
+              </NuxtLink>
               <button
                 class="p-1.5 rounded-lg text-slate-400 hover:bg-slate-100 hover:text-slate-600 transition"
                 title="登出"

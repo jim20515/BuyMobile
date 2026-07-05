@@ -4,6 +4,7 @@ export interface User {
   username: string
   passwordHash: string
   displayName: string
+  mustChangePassword: boolean
 }
 
 export interface QuoteItem {

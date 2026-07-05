@@ -16,7 +16,7 @@ export default defineEventHandler(async (event) => {
   }
 
   const session = await getAdminSession(event)
-  await session.update({ user: user.username, displayName: user.displayName })
+  await session.update({ user: user.username, displayName: user.displayName, mustChangePassword: user.mustChangePassword })
 
-  return { ok: true, user: user.username, displayName: user.displayName }
+  return { ok: true, user: user.username, displayName: user.displayName, mustChangePassword: user.mustChangePassword }
 })
