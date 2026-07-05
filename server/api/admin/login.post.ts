@@ -14,6 +14,9 @@ export default defineEventHandler(async (event) => {
   if (!user) {
     throw createError({ statusCode: 401, statusMessage: '帳號或密碼錯誤' })
   }
+  if (!user.isActive) {
+    throw createError({ statusCode: 403, statusMessage: '帳號已停用，請聯絡管理員' })
+  }
 
   const session = await getAdminSession(event)
   await session.update({ user: user.username, displayName: user.displayName, mustChangePassword: user.mustChangePassword })

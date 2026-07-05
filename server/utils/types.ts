@@ -5,6 +5,8 @@ export interface User {
   passwordHash: string
   displayName: string
   mustChangePassword: boolean
+  isActive: boolean
+  createdAt: string
 }
 
 export interface QuoteItem {

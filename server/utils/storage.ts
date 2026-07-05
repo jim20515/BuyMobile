@@ -1,4 +1,4 @@
-import { createHash, randomUUID } from 'node:crypto'
+import { createHash, randomInt, randomUUID } from 'node:crypto'
 import type { CompanyProfile, PublishedQuotes, User } from './types'
 import { useSupabase } from './supabase'
 
@@ -8,6 +8,12 @@ export function sha256(text: string): string {
 
 export function newId(): string {
   return randomUUID()
+}
+
+const PASSWORD_CHARS = 'ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnpqrstuvwxyz23456789'
+
+export function generatePassword(length = 12): string {
+  return Array.from({ length }, () => PASSWORD_CHARS[randomInt(PASSWORD_CHARS.length)]).join('')
 }
 
 function fail(message: string): never {
@@ -21,6 +27,8 @@ const DEFAULT_ADMIN: User = {
   passwordHash: sha256('buymobile123'),
   displayName: '管理員',
   mustChangePassword: false,
+  isActive: true,
+  createdAt: new Date().toISOString(),
 }
 
 function toUser(row: any): User {
@@ -29,12 +37,14 @@ function toUser(row: any): User {
     passwordHash: row.password_hash,
     displayName: row.display_name,
     mustChangePassword: row.must_change_password,
+    isActive: row.is_active,
+    createdAt: row.created_at,
   }
 }
 
 export async function getUsers(): Promise<User[]> {
   const supabase = useSupabase()
-  const { data, error } = await supabase.from('users').select('*')
+  const { data, error } = await supabase.from('users').select('*').order('created_at', { ascending: true })
   if (error) fail(error.message)
   if (data && data.length > 0) return data.map(toUser)
 
@@ -53,21 +63,23 @@ export async function findUser(username: string, password: string): Promise<User
   return users.find(u => u.username === username && u.passwordHash === hash) ?? null
 }
 
+export async function usernameExists(username: string): Promise<boolean> {
+  const supabase = useSupabase()
+  const { data, error } = await supabase.from('users').select('username').eq('username', username).maybeSingle()
+  if (error) fail(error.message)
+  return !!data
+}
+
 export async function createUser(input: { username: string, password: string, displayName: string, mustChangePassword?: boolean }): Promise<User> {
   const supabase = useSupabase()
-  const { error } = await supabase.from('users').insert({
+  const { data, error } = await supabase.from('users').insert({
     username: input.username,
     password_hash: sha256(input.password),
     display_name: input.displayName,
     must_change_password: input.mustChangePassword ?? false,
-  })
+  }).select().single()
   if (error) fail(error.message)
-  return {
-    username: input.username,
-    passwordHash: sha256(input.password),
-    displayName: input.displayName,
-    mustChangePassword: input.mustChangePassword ?? false,
-  }
+  return toUser(data)
 }
 
 export async function updateUserPassword(username: string, newPassword: string): Promise<void> {
@@ -77,6 +89,17 @@ export async function updateUserPassword(username: string, newPassword: string):
     .update({ password_hash: sha256(newPassword), must_change_password: false })
     .eq('username', username)
   if (error) fail(error.message)
+}
+
+export async function setUserActive(username: string, isActive: boolean): Promise<boolean> {
+  const supabase = useSupabase()
+  const { data, error } = await supabase
+    .from('users')
+    .update({ is_active: isActive })
+    .eq('username', username)
+    .select('username')
+  if (error) fail(error.message)
+  return (data?.length ?? 0) > 0
 }
 
 // ---------- 報價 ----------
