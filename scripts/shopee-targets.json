@@ -1,0 +1,11 @@
+{
+  "note": "要監控的 iPhone 型號清單。keyword 建議寫得夠精準（含容量），減少雜訊。maxPrice/minPrice 用來過濾明顯離譜的賣場（配件、空盒、預購金）。",
+  "targets": [
+    { "model": "iPhone 15", "keyword": "iPhone 15 128G 全新", "minPrice": 15000, "maxPrice": 35000 },
+    { "model": "iPhone 15 Pro", "keyword": "iPhone 15 Pro 256G 全新", "minPrice": 25000, "maxPrice": 50000 },
+    { "model": "iPhone 15 Pro Max", "keyword": "iPhone 15 Pro Max 256G 全新", "minPrice": 30000, "maxPrice": 60000 },
+    { "model": "iPhone 16", "keyword": "iPhone 16 128G 全新", "minPrice": 20000, "maxPrice": 40000 },
+    { "model": "iPhone 16 Pro", "keyword": "iPhone 16 Pro 256G 全新", "minPrice": 28000, "maxPrice": 55000 },
+    { "model": "iPhone 16 Pro Max", "keyword": "iPhone 16 Pro Max 256G 全新", "minPrice": 35000, "maxPrice": 65000 }
+  ]
+}
